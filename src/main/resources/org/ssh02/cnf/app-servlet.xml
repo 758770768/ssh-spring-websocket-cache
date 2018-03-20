@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.1.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+	<!-- 8扫描对象 -->
+	<context:component-scan base-package="org.ssh02.web,org.ssh02.websocket"></context:component-scan>
+	<!-- 9.组件 -->
+	<mvc:annotation-driven />
+
+	<bean id="internalResourceViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/JSP/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	<!-- 10.默认资源处理器 -->
+	<mvc:default-servlet-handler />
+
+
+	<!-- websocket -->
+	<websocket:handlers>
+		<websocket:mapping handler="webHandler" path="/websocket" />
+		<websocket:handshake-interceptors>
+			<ref bean="handlerInteceptor" />
+		</websocket:handshake-interceptors>
+	</websocket:handlers>
+
+</beans>
