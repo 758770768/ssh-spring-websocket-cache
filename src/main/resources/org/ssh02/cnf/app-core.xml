@@ -29,6 +29,11 @@
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.region.factory_class">
+					org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+				</prop>
 			</props>
 		</property>
 		<property name="packagesToScan" value="org.ssh02.pojo"></property>
@@ -47,16 +52,22 @@
 	<context:component-scan base-package="org.ssh02.service,org.ssh02.dao">
 	</context:component-scan>
 
+	<!-- spring集成ehcache -->
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+		<property name="cacheManager" ref="ehcache"></property>
+	</bean>
+
+	<!-- 生成ehcache对象 -->
+	<bean id="ehcache"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:ehcache.xml"></property>
+		<property name="shared" value="true"></property>
+	</bean>
+
+	<!-- 开启缓存注解 -->
+	<cache:annotation-driven />
 
 
-
-	<!-- spring缓存配置 -->
-	<!-- <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager"> 
-		<property name="caches"> <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"> 
-		<property name="name" value="emps"></property> </bean> </property> </bean> 
-		<cache:annotation-driven /> -->
-	
-	
 
 </beans>
 
